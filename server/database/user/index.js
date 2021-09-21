@@ -10,5 +10,16 @@ const UserSchema = new mongoose.Schema({
 },{
     timestamps: true
 });
+//statics and methods
+UserSchema.statics.findByEmailAndPhone = async({email, phoneNumber}) => {
+        const checkUserByEmail = await UserModel.findOne({email});
+        const checkUserByPhone = await UserModel.findOne({phoneNumber});
+
+        if(checkUserByEmail || checkUserByPhone){
+            throw new Error("User already exists!!");
+        };
+
+        return false;
+};
 
 export const UserModel = mongoose.model("Users", UserSchema);
