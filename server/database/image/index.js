@@ -10,4 +10,4 @@ const ImageSchema = new mongoose.Schema({
     timestamps: true
 });
 
-export const ImageModel = mongoose.Model("Images", FoodSchema);
+export const ImageModel = mongoose.model("Images", ImageSchema);

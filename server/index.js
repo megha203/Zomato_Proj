@@ -1,6 +1,11 @@
+require('dotenv').config();
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import ConnectDB from './database/connection';
+
+//Route
+import auth from './API/auth/index';
 
 const zomato = express();
 
@@ -13,4 +18,8 @@ zomato.get("/",(req,res)=>{
     res.json({message: "Steup Successful!"})
 });
 
-zomato.listen(4000,()=>{console.log("Server is up and running!!")});
+zomato.use("/auth", auth);
+zomato.listen(4000,()=>ConnectDB()
+.then(()=>console.log("Server is up and running!"))
+.catch(()=>console.log("Server is running but database connection failed!"))
+);

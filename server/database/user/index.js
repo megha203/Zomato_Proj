@@ -11,4 +11,4 @@ const UserSchema = new mongoose.Schema({
     timestamps: true
 });
 
-export const UserModel = mongoose.Model("Users", FoodSchema);
+export const UserModel = mongoose.model("Users", UserSchema);
