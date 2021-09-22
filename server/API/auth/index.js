@@ -1,6 +1,4 @@
-import express from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import express from 'express'
 
 import {UserModel} from '../../database/user/index';
 
@@ -16,27 +14,13 @@ Method          POST
 Router.post("/signup" , async(req,res)=>{
     try{
         const {email, password, fullName, phoneNumber} = req.body.credentials;
-        const checkUserByEmail = await UserModel.findOne({email});
-        const checkUserByPhone = await UserModel.findOne({phoneNumber});
-
-        //check if email exists
-        if(checkUserByEmail || checkUserByPhone){
-            return res.json({email: "User alresdy exists!"});
-        };
-
-        //hash password
-        const bcryptSalt = await bcrypt.genSalt(8);
-        const hashedPassword = await bcrypt.hash(password, bcryptSalt);
-
-        //save to database
-        const newUser = await UserModel.create({
-            ...req.body.credentials,
-            password: hashedPassword
         
-        });
+        await UserModel.findByEmailAndPhone(req.body.credentials);
+
+        const newUser = await UserModel.create(req.body.credentials);
 
         //jwt token
-        const token = jwt.sign({user: {fullName, email}}, "ZomatoAPP");
+        const token = newUser.generateJwtToken();
 
         return res.status(200).json({token,status:"Success"});
 
