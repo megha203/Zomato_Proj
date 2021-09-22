@@ -24,8 +24,25 @@ Router.post("/signup" , async(req,res)=>{
 
         return res.status(200).json({token,status:"Success"});
 
-    } catch(e){
-        return res.status(500).json({e: e.message})
+    } catch(error){
+        return res.status(500).json({error: error.message})
+    }
+});
+
+/*
+Route           auth/signin
+Desc            Signin with email and passord!
+Params          None
+Access          Public
+Method          POST
+*/
+Router.post("/signin",async(req,res) => {
+    try{
+        const user = await UserModel.findByEmailAndPassword(req.body.credentials);
+        const token = user.generateJwtToken();
+        return res.status(200).json({token, status:"Success!!"});
+    } catch(error){
+        return res.status(500).json({error: error.message});
     }
 });
 
