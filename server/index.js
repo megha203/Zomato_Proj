@@ -19,7 +19,7 @@ zomato.get("/",(req,res)=>{
 });
 
 zomato.use("/auth", auth);
-zomato.listen(4000,()=>ConnectDB()
+zomato.listen(5000,()=>ConnectDB()
 .then(()=>console.log("Server is up and running!"))
 .catch(()=>console.log("Server is running but database connection failed!"))
 );
